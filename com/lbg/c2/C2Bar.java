@@ -3,8 +3,11 @@ package com.lbg.c2;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import java.awt.Desktop;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class C2Bar extends JMenuBar {
 	/**
@@ -107,7 +110,7 @@ public class C2Bar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				String info = "Name: Construct 2 Plugin Maker " +
 			"\nDeveloper: Naji Kadri\nVersion: 1.0.0"+
-			 "\nResources : Construct 2 Plugin Template\nContact : naji-newman-2000@hotmail.com"
+			 "\nResources : Construct 2 Plugin Template\nGitHub : http://bit.ly/CPMSource \nContact : naji-newman-2000@hotmail.com"
 			;
 				JOptionPane.showMessageDialog(frame, info, "about", JOptionPane.INFORMATION_MESSAGE);
 				
@@ -121,9 +124,12 @@ public class C2Bar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				System.out.println(plugin);
-				System.out.println(plugin.getConditions());
-				System.out.println(plugin.getActions());
+				try {
+					Desktop.getDesktop().browse(new URL("http://bit.ly/CPMDoc").toURI());
+				} catch (IOException | URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		
 				
 			}
