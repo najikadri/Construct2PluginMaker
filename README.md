@@ -1,7 +1,7 @@
 # Construct2PluginMaker
 plugin maker for Construct 2 developers
 
-##Useful Code Source
+##Useful Code Snippet
 **Copy any file in Java :**
 ```java
 public static void copyFiles (File in, File out) {
