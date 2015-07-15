@@ -24,8 +24,6 @@ public class C2Frame extends JFrame {
 	private ParamFrame paramFrame;
 	
 	public C2Frame () {
-		super("Construct 2 Plugin Maker");
-		
 		
 		try {
 		   UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -35,11 +33,17 @@ public class C2Frame extends JFrame {
 		}
 		
 		
+		Translator.init();
+		
+		this.setTitle(Translator.getTitle());
+		
 		plugin = new Plugin ();
 		
 		infoFrame = new InfoFrame(this);
 		
 		paramFrame = new ParamFrame();
+		
+		
 		
 		
 		conditions = new JList<String> ();
@@ -55,10 +59,10 @@ public class C2Frame extends JFrame {
 		
 		
 		pane = new JTabbedPane ();
-		pane.addTab("Conditions", new JScrollPane(conditions));
-		pane.addTab("Actions", new JScrollPane(actions));
-		pane.addTab("Expressions", new JScrollPane(expressions));
-		pane.addTab("Properties", new JScrollPane(properties));
+		pane.addTab(Translator.getConditions(), new JScrollPane(conditions));
+		pane.addTab(Translator.getActions(), new JScrollPane(actions));
+		pane.addTab(Translator.getExpressions(), new JScrollPane(expressions));
+		pane.addTab(Translator.getProperties(), new JScrollPane(properties));
 		
 		popup = new C2Popup (this,pane);
 		
@@ -233,6 +237,19 @@ public class C2Frame extends JFrame {
 	
 	public JTabbedPane getPane () {
 		return pane;
+	}
+	
+	public C2Popup getPopup () {
+		return popup;
+	}
+	
+	public void refresh () {
+		pane.setTitleAt(0, Translator.getConditions());
+		pane.setTitleAt(1, Translator.getActions());
+		pane.setTitleAt(2, Translator.getExpressions());
+		pane.setTitleAt(3, Translator.getProperties());
+		
+		this.setTitle(Translator.getTitle());
 	}
 	
 
