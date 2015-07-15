@@ -25,6 +25,7 @@ public class C2Bar extends JMenuBar {
 	private JMenu edit;
 	private JMenu build;
 	private JMenu help;
+	private JMenu lang;
 	private JMenuItem documentation;
 	private JMenuItem about;
 	private JMenuItem New;
@@ -36,6 +37,8 @@ public class C2Bar extends JMenuBar {
 	private JMenuItem export;
 	private JMenuItem reexport;
 	private JMenuItem template;
+	private JMenuItem english;
+	private JMenuItem russian;
 	private File buildLocation;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
@@ -53,39 +56,39 @@ public class C2Bar extends JMenuBar {
 		
 		fileChooser = new JFileChooser();
 		
-		file = new JMenu ("file");
+		file = new JMenu (Translator.getFile());
 		file.setMnemonic('f');
-		New =  new JMenuItem ("new");
+		New =  new JMenuItem (Translator.getNew());
 		New.setMnemonic('n');
-		open = new JMenuItem ("open");
+		open = new JMenuItem (Translator.getOpen());
 		open.setMnemonic('o');
-		save = new JMenuItem ("save");
+		save = new JMenuItem (Translator.getSave());
 		save.setMnemonic('s');
 		file.add(New);
 		file.add(open);
 		file.add(save);
 		this.add(file);
 		
-		edit = new JMenu ("edit");
+		edit = new JMenu (Translator.getEdit());
 		edit.setMnemonic('e');
-		eInfo = new JMenuItem ("info");
+		eInfo = new JMenuItem (Translator.getInfo());
 		eInfo.setMnemonic('i');
-		eParam = new JMenuItem ("parameters");
+		eParam = new JMenuItem (Translator.getParameters());
 		eParam.setMnemonic('p');
 		edit.add(eInfo);
 		edit.add(eParam);
 		this.add(edit);
 		
-		build = new JMenu ("build");
+		build = new JMenu (Translator.getBuild());
 		build.setMnemonic('b');
-		info = new JMenuItem ("info");
+		info = new JMenuItem (Translator.getInfo());
 		info.setMnemonic('i');
-		export = new JMenuItem ("export");
+		export = new JMenuItem (Translator.getExport());
 		export.setMnemonic('e');
-		reexport = new JMenuItem  ("reexport");
+		reexport = new JMenuItem  (Translator.getReExport());
 		reexport.setMnemonic('r');
 		reexport.setEnabled(false);
-		template = new JMenuItem ("template");
+		template = new JMenuItem (Translator.getTemplate());
 		template.setMnemonic('t');
 		build.add(info);
 		build.add(template);
@@ -94,15 +97,25 @@ public class C2Bar extends JMenuBar {
 		build.add(reexport);
 		this.add(build);
 		
-		help = new JMenu ("help");
+		help = new JMenu (Translator.getHelp());
 		help.setMnemonic('h');
-		about = new JMenuItem ("about");
+		about = new JMenuItem (Translator.getAbout());
 		about.setMnemonic('a');
-		documentation = new JMenuItem ("documentation");
+		documentation = new JMenuItem (Translator.getDoc());
 		documentation.setMnemonic('d');
         help.add(about);
         help.add(documentation);
         this.add(help);
+        
+        lang = new JMenu ("lang");
+        lang.setMnemonic('l');
+        english = new JMenuItem ("eng");
+        english.setMnemonic('e');
+        russian = new JMenuItem ("rus");
+        russian.setMnemonic('r');
+        lang.add(english);
+        lang.add(russian);
+        this.add(lang);
 		
 		about.addActionListener( new ActionListener () {
 
@@ -110,7 +123,8 @@ public class C2Bar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				String info = "Name: Construct 2 Plugin Maker " +
 			"\nDeveloper: Naji Kadri\nVersion: 1.0.0"+
-			 "\nResources : Construct 2 Plugin Template\nGitHub : http://bit.ly/CPMSource \nContact : naji-newman-2000@hotmail.com"
+			 "\nResources : Construct 2 Plugin Template\nGitHub : http://bit.ly/CPMSource \nContact : naji-newman-2000@hotmail.com"+
+			"\nTranslation: Russian: Daniil Schetinskiy (norman74)"
 			;
 				JOptionPane.showMessageDialog(frame, info, "about", JOptionPane.INFORMATION_MESSAGE);
 				
@@ -182,7 +196,6 @@ public class C2Bar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 		    frame.dispose();
 		    new C2Frame ();
-				
 			}
 			
 		});
@@ -345,9 +358,65 @@ public class C2Bar extends JMenuBar {
 				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				fileChooser.showOpenDialog(frame);
 				plugin.setTemplate(fileChooser.getSelectedFile());
+				
+				try {
+					ObjectOutputStream out = new ObjectOutputStream (new FileOutputStream(Translator.TempFile));
+					out.writeObject(plugin.getTemplate());
+					out.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 			
 		});
+		
+		english.addActionListener(new ActionListener () {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Translator.setlang(Translator.ENG);
+				try {
+					ObjectOutputStream out = new ObjectOutputStream (new FileOutputStream(Translator.LangFile));
+					out.writeObject(Translator.Language);
+					out.close();
+					refresh();
+					frame.refresh();
+					frame.getPopup().refresh();
+	
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				
+			}
+			
+		});
+		
+		russian.addActionListener(new ActionListener () {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Translator.setlang(Translator.RUS);
+				try {
+					ObjectOutputStream out = new ObjectOutputStream (new FileOutputStream(Translator.LangFile));
+					out.writeObject(Translator.Language);
+					out.close();
+					refresh();
+					frame.refresh();
+					frame.getPopup().refresh();
+					
+				} catch (IOException e1) {
+					
+					e1.printStackTrace();
+				}
+				
+				
+			}
+			
+		});
+		
 		
 		
 	}
@@ -430,6 +499,27 @@ public class C2Bar extends JMenuBar {
 
 	public void setOutDir(File outDir) {
 		this.outDir = outDir;
+	}
+	
+	public void refresh () {
+
+		file.setText(Translator.getFile());
+		New.setText (Translator.getNew());
+		open.setText(Translator.getOpen());
+		save.setText (Translator.getSave());
+		edit.setText(Translator.getEdit());
+		eInfo.setText(Translator.getInfo());
+		eParam.setText(Translator.getParameters());
+		build.setText(Translator.getBuild());
+		info.setText(Translator.getInfo());
+		export.setText(Translator.getExport());
+		reexport.setText(Translator.getReExport());
+		template.setText(Translator.getTemplate());
+		help.setText(Translator.getHelp());
+		about.setText(Translator.getAbout());
+		documentation.setText(Translator.getDoc());
+
+		
 	}
 
 }
