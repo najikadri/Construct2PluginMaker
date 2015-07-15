@@ -24,11 +24,11 @@ public class C2Popup extends JPopupMenu{
 		setFrame(f);
 		setPane(p);
 		
-		add = new JMenuItem ("add");
+		add = new JMenuItem (Translator.getAdd());
 		add.setMnemonic('a');
-		edit = new JMenuItem ("edit");
+		edit = new JMenuItem (Translator.getEdit());
 		edit.setMnemonic('e');
-		delete = new JMenuItem ("delete");
+		delete = new JMenuItem (Translator.getDelete());
 		delete.setMnemonic('d');
 		
 		this.add(add);
@@ -263,6 +263,13 @@ public class C2Popup extends JPopupMenu{
 
 	public void setPane(JTabbedPane pane) {
 		this.pane = pane;
+	}
+	
+	public void refresh () {
+		add.setText(Translator.getAdd());
+		edit.setText(Translator.getEdit());
+		delete.setText(Translator.getDelete());
+
 	}
 
 }
