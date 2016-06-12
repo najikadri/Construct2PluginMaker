@@ -163,7 +163,7 @@ public class PluginBuilder {
 				   
 				   if (par instanceof NumberParam) { // if condition
 					   
-					conditions = conditions + "AddNumberParam(\""+par.getLabel()+"\",\""+par.getDescription()+"\".\""+par.getValue()+"\");\n";
+					conditions = conditions + "AddNumberParam(\""+par.getLabel()+"\",\""+par.getDescription()+"\",\""+par.getValue()+"\");\n";
 					 
 				   }
 				   else if (par instanceof StringParam) {
